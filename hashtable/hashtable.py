@@ -22,7 +22,9 @@ class HashTable:
     """
 
     def __init__(self, capacity=MIN_CAPACITY):
-        self.capacity = [None] * capacity
+        self.capacity = capacity
+        self.count = 0
+        self.data = [None] * capacity
 
     def get_num_slots(self):
         """
@@ -42,7 +44,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.load/self.capacity
 
     def fnv1(self, key):
         """
@@ -86,7 +88,34 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        inx = self.hash_index(key)
+        # If there is nothing in the linked list
+        if self.data[inx] == None:
+            # Create a new one with an empty key and value
+            self.data[inx] = HashTableEntry(key, value)
+            # Increase the size of the Linked list, used to get number of items in LL
+            self.count += 1
+            # If there is something in the linked list
+        else:
+            # Set node equal to the index value within the data (the buildout version of the LL)
+            node = self.data[inx]
+            # If the value entered equals the value of the key of the node
+            if node.key == key:
+                # Then then value of the node is equal to the value of the value of the node
+                node.value = value
+                # If the entered input doesnt equal any node
+            else:
+                # Loop through list while there is a value in .next and the value in .key is not the input
+                while node.next is not None and node.key != key:
+                    # Point to the next node
+                    node = node.next
+                # Once loop is done, create a new next value with the input
+                node.next = HashTableEntry(key, value)
+                # increase the count
+                self.count += 1
+
+        if self.get_load_factor() > 0.7:
+            self.resize(2 * self.capacity)
 
     def delete(self, key):
         """
