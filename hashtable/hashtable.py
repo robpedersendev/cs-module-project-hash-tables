@@ -122,7 +122,10 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Use the PUT method to trick the linked list to remove the entry with the specific key
+        self.put(key, None)
+        # Decrement the data objects total weight
+        self.count -= 1
 
     def get(self, key):
         """
