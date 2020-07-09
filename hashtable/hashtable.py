@@ -109,7 +109,7 @@ class HashTable:
 
         Implement this.
         """
-        return self.load / self.capacity
+        return self.count / self.capacity
 
     def fnv1(self, key):
         """
