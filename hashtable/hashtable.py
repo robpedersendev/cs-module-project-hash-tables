@@ -29,6 +29,7 @@ class HashTable:
     def __init__(self, capacity=MIN_CAPACITY):
         self.capacity = capacity
         self.count = 0
+        # An Array of linked lists
         self.data = [LinkedList()] * capacity
 
     def get_num_slots(self):
@@ -93,34 +94,25 @@ class HashTable:
 
         Implement this.
         """
-        inx = self.hash_index(key)
-        # If there is nothing in the linked list
-        if self.data[inx] == None:
-            # Create a new one with an empty key and value
-            self.data[inx] = HashTableEntry(key, value)
-            # Increase the size of the Linked list, used to get number of items in LL
-            self.count += 1
-            # If there is something in the linked list
-        else:
-            # Set node equal to the index value within the data (the buildout version of the LL)
-            node = self.data[inx]
-            # If the value entered equals the value of the key of the node
-            if node.key == key:
-                # Then then value of the node is equal to the value of the value of the node
-                node.value = value
-                # If the entered input doesnt equal any node
-            else:
-                # Loop through list while there is a value in .next and the value in .key is not the input
-                while node.next is not None and node.key != key:
-                    # Point to the next node
-                    node = node.next
-                # Once loop is done, create a new next value with the input
-                node.next = HashTableEntry(key, value)
-                # increase the count
-                self.count += 1
+        # Assign node to the value of hash_index method
+        node = self.hash_index(key)
+        # Grab the head of the head of the linked List, cause the LinkedList() is created with a head
+        current_node = self.data[node].head
 
-        if self.get_load_factor() > 0.7:
-            self.resize(2 * self.capacity)
+        # While there is a current_node
+        while current_node:
+            # If the the current nodes key is the key were looking for
+            if current_node.key == key:
+                # Set the current nodes value to the value
+                current_node.value = value
+            # Otherwise move along to the next node
+            current_node = current_node.next
+        # Create a new_node object using the HashTableEntry class
+        new_node = HashTableEntry(key, value)
+        # Insert a new node into the data object (the stack SLL)
+        self.data[slot].insert(new_node)
+        # Add to the data objects total weight
+        self.count += 1
 
     def delete(self, key):
         """
