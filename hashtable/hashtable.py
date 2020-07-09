@@ -216,8 +216,27 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
-        pass
+        # If the load factor is less than .7
+        if self.get_load_factor() >= 0.7:
+            self.count = 0
+            # Save data to a variable of old_data
+            old_data = self.data
+            # Create a new linked list equal to the new capacity value
+            self.data = [LinkedList()] * new_capacity
+            # Loop through the old data
+            for node in old_data:
+                # Setting the current_node to equal the node.head value
+                current_node = node.head
+                # Then loop through starting at the current_node above
+                while current_node:
+                    # And use the put method to add to the new data stack SLL
+                    self.put(current_node.key, current_node.value)
+                    # Move to the next node
+                    current_node = current_node.next
+                    # Reincrement the weight of the hashtable
+                    self.count += 1
+            # Reset the capacity
+            self.capacity = new_capacity
 
 
 if __name__ == "__main__":
