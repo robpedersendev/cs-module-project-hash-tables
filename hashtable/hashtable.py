@@ -95,20 +95,9 @@ class HashTable:
 
         Implement this.
         """
-        # Assign node to the value of hash_index method
-        node = self.hash_index(key)
-        # Grab the head of the head of the linked List, cause the LinkedList() is created with a head
-        current_node = self.data[node].head
+        # For DRY code use the get function here since it uses the same code
+        self.get(key)
 
-        # While there is a current_node
-        while current_node:
-            # If the the current nodes key is the key were looking for
-            if current_node.key == key:
-                # Set the current nodes value to the value
-                current_node.value = value
-            # Otherwise move along to the next node
-            current_node = current_node.next
-        # Create a new_node object using the HashTableEntry class
         new_node = HashTableEntry(key, value)
         # Insert a new node into the data object (the stack SLL)
         self.data[slot].insert(new_node)
