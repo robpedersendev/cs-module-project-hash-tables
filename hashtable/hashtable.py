@@ -1,7 +1,65 @@
-from linked_list import LinkedList
-import sys
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
 
-sys.path.append('../hashtable/linked-list')
+    def __repr__(self):
+        return f'Node({repr(self.value)})'
+
+
+class LinkedList:
+    # Instantiate the Singly Linked list class
+    def __init__(self):
+        self.head = None
+
+    # Create an insert method that adds a node as the head. This is a "Stack" SLL
+    def insert(self, node):
+        node.next = self.head
+        self.head = node
+
+    # Delete
+    def delete(self, value):
+        current_node = self.head
+
+        # If you are deleting the head of the list
+        if current_node.value == value:
+            self.head = self.head.next
+            return current_node
+
+        # Move to the next node
+        prev_node = current_node
+        current_node = current_node.next
+
+        # While current_node is not None repeat loop
+        while current_node is not None:
+            # If the value is the same
+            if current_node.value == value:
+                # Delete it by bypassing it
+                prev_node.next = current_node.next
+                # return the current_node
+                return current_node
+            # Otherwise
+            else:
+                # Move on to the next node
+                prev_node = prev_node.next
+                current_node = current_node.next
+        # Return None
+        return None
+
+    # Lookup a value
+    def lookup(self, value):
+        # set current_node to the head
+        current_node = self.head
+        # Loop through linked list
+        while current_node is not None:
+            # If the nodes value is needed value
+            if current_node.value == value:
+                # Return the nodes value
+                return current_node
+            # Else move on to the next node
+            current_node = current_node.next
+        # Return none
+        return None
 
 
 class HashTableEntry:
@@ -95,12 +153,23 @@ class HashTable:
 
         Implement this.
         """
-        # For DRY code use the get function here since it uses the same code
-        self.get(key)
+        # Assign node to the value of hash_index method
+        node = self.hash_index(key)
+        # Grab the head of the head of the linked List, cause the LinkedList() is created with a head
+        current_node = self.data[node].head
+
+        # While there is a current_node
+        while current_node:
+            # If the the current nodes key is the key were looking for
+            if current_node.key == key:
+                # Set the current nodes value to the value
+                current_node.value = value
+            # Otherwise move along to the next node
+            current_node = current_node.next
 
         new_node = HashTableEntry(key, value)
         # Insert a new node into the data object (the stack SLL)
-        self.data[slot].insert(new_node)
+        self.data[node].insert(new_node)
         # Add to the data objects total weight
         self.count += 1
 
@@ -134,10 +203,11 @@ class HashTable:
         while current_node:
             # If the the current nodes key is the key were looking for
             if current_node.key == key:
-                # Set the current nodes value to the value
-                current_node.value = value
+                # Return the current nodes value
+                return current_node.value
             # Otherwise move along to the next node
             current_node = current_node.next
+
 
     def resize(self, new_capacity):
         """
