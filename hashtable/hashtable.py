@@ -1,5 +1,6 @@
 from linked_list import LinkedList
 import sys
+
 sys.path.append('../hashtable/linked-list')
 
 
@@ -135,7 +136,19 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        # Assign node to the value of hash_index method
+        node = self.hash_index(key)
+        # Grab the head of the head of the linked List, cause the LinkedList() is created with a head
+        current_node = self.data[node].head
+
+        # While there is a current_node
+        while current_node:
+            # If the the current nodes key is the key were looking for
+            if current_node.key == key:
+                # Set the current nodes value to the value
+                current_node.value = value
+            # Otherwise move along to the next node
+            current_node = current_node.next
 
     def resize(self, new_capacity):
         """
@@ -145,6 +158,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        pass
 
 
 if __name__ == "__main__":
