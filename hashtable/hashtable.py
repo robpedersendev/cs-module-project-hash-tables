@@ -87,8 +87,9 @@ class HashTable:
 
     def __init__(self, capacity=MIN_CAPACITY):
         self.capacity = capacity
+        # Number of nodes adjusted when added or removed from the list
         self.count = 0
-        # An Array of linked lists
+        # An Array of linked lists to handle collisions
         self.data = [LinkedList()] * capacity
 
     def get_num_slots(self):
@@ -109,6 +110,7 @@ class HashTable:
 
         Implement this.
         """
+        # number of filled nodes divided by the total size of the available node slots
         return self.count / self.capacity
 
     def fnv1(self, key):
@@ -118,7 +120,7 @@ class HashTable:
         Implement this, and/or DJB2.
         Could only find information on FNV1a
         """
-        # Placed the seed value within the function
+        # Placed the seed value within the function to keep original function the same as much as possible
         seed = 0
         FNV_prime = 578421533
         offset_basis = 5548812254
@@ -207,7 +209,6 @@ class HashTable:
                 return current_node.value
             # Otherwise move along to the next node
             current_node = current_node.next
-
 
     def resize(self, new_capacity):
         """
